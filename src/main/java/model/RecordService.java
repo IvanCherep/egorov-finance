@@ -3,19 +3,15 @@ package model;
 import java.util.Date;
 import java.util.Map;
 
-public class RecordService {
+public interface RecordService {
 
-    public Record createRecord(Map<String, Object> recordValues) {
-        Long id = 1L;
-        String name = (String) recordValues.get("name");
-        String category = (String) recordValues.get("category");
-        Double moneyAmount = (Double) recordValues.get("moneyAmount");
-        Date transactionDate = (Date) recordValues.get("transactionDate");
-        return new Record(id, name, category, moneyAmount, transactionDate);
-    }
 
-    public Record getRecordById(long id) {
-        return null;
-    }
+    public Record createRecord(Map<String, Object> recordValues);
+
+    public Record modifyRecord(Map<String, Object> recordValues, Record originalRecord);
+
+    public Record getRecordById(long id);
+
+    public double getTotalBalance(Date date);
 
 }

@@ -2,6 +2,7 @@ package view;
 
 import model.Record;
 import model.RecordService;
+import model.RecordServiceImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +16,7 @@ public class Console {
 
         List<Record> records = new ArrayList<>();
         boolean stopFlag = false;
-        RecordService recordService = new RecordService();
+        RecordService recordService = new RecordServiceImpl();
 
         while(!stopFlag) {
             printMenu();
@@ -75,7 +76,7 @@ public class Console {
         recordValues.put("moneyAmount", moneyAmount);
         input.nextLine();
         System.out.print("Дата (дд.мм.гггг): ");
-        Date transactionDate = readDate(input);
+        Long transactionDate = readDate(input);
         recordValues.put("transactionDate", transactionDate);
 
         return recordValues;
@@ -90,11 +91,11 @@ public class Console {
         return input.nextDouble();
     }
 
-    private static Date readDate(Scanner input) {
+    private static long readDate(Scanner input) {
         String strTransactionDate = input.nextLine();
         Date date = new Date();
         if (strTransactionDate.isEmpty()) {
-            return date;
+            return date.getTime();
         }
         SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
         try {
@@ -104,7 +105,7 @@ public class Console {
             System.out.print("Дата (дд.мм.гггг): ");
             readDate(input);
         }
-        return date;
+        return date.getTime();
     }
 
     private static void printMenu() {
