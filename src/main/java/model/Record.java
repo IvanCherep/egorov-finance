@@ -4,8 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-//TODO добавить валюту
-//TODO модуль учета долгов, нам должны я должен, подумать
+// Модуль учета долгов?
 public class Record {
 
     private final Long recordId;
@@ -30,7 +29,9 @@ public class Record {
 
     private final Account toAccount;
 
-    private final static DateFormat dateFormat= new SimpleDateFormat("dd.MM.yyyy");
+    private final Currency currency = Currency.RUBBLE;
+
+    private final static DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
 
     public Record(Long recordId, String name, Category category,
@@ -73,6 +74,7 @@ public class Record {
                 ", \"recordLastModifiedDate\": \"%s\"" +
                 ", \"fromAccount\": \"%s\"" +
                 ", \"toAccount\": \"%s\"" +
+                ", \"currency\": \"%s\"" +
                 "}",
                 recordId,
                 name,
@@ -84,7 +86,8 @@ public class Record {
                 recordLastModifierUser.getLogin(),
                 dateFormat.format(new Date(recordLastModifiedDate)),
                 fromAccount.getName(),
-                toAccount.getName());
+                toAccount.getName(),
+                currency);
     }
 
 }
