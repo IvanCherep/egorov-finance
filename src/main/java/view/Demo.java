@@ -1,8 +1,8 @@
 package view;
 
 import model.Record;
-import model.RecordService;
-import model.RecordServiceImpl;
+import model.services.RecordService;
+import model.services.impl.RecordServiceImpl;
 
 import java.util.*;
 

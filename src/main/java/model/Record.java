@@ -4,46 +4,54 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+//TODO добавить валюту
+//TODO модуль учета долгов, нам должны я должен, подумать
 public class Record {
 
     private final Long recordId;
 
     private final String name;
 
-    private final String category;
+    private final Category category;
 
     private final Double moneyAmount;
 
     private final long transactionDate;
 
-    private final String recordCreatorLogin;
+    private final User recordCreatorUser;
 
     private final long recordCreationTimestamp;
 
-    private final String recordLastModifierLogin;
+    private final User recordLastModifierUser;
 
     private final long recordLastModifiedDate;
 
+    private final Account fromAccount;
+
+    private final Account toAccount;
+
     private final static DateFormat dateFormat= new SimpleDateFormat("dd.MM.yyyy");
 
-    // Как обозначит счет списания и получения???
 
-    public Record(Long recordId, String name, String category,
-                  Double moneyAmount, long transactionDate, String recordCreatorLogin,
-                  long recordCreationTimestamp, String recordLastModifierLogin, long recordLastModifiedDate) {
+    public Record(Long recordId, String name, Category category,
+                  Double moneyAmount, long transactionDate, User recordCreatorUser,
+                  long recordCreationTimestamp, User recordLastModifierUser, long recordLastModifiedDate,
+                  Account fromAccount, Account toAccount) {
         this.recordId = recordId;
         this.name = name;
         this.category = category;
         this.moneyAmount = moneyAmount;
         this.transactionDate = transactionDate;
-        this.recordCreatorLogin = recordCreatorLogin;
+        this.recordCreatorUser = recordCreatorUser;
         this.recordCreationTimestamp = recordCreationTimestamp;
-        this.recordLastModifierLogin = recordLastModifierLogin;
+        this.recordLastModifierUser = recordLastModifierUser;
         this.recordLastModifiedDate = recordLastModifiedDate;
+        this.fromAccount = fromAccount;
+        this.toAccount = toAccount;
     }
 
-    public String getRecordCreatorLogin() {
-        return recordCreatorLogin;
+    public User getRecordCreatorUser() {
+        return recordCreatorUser;
     }
 
     public long getRecordCreationTimestamp() {
@@ -63,16 +71,20 @@ public class Record {
                 ", \"recordCreationTimestamp\": \"%s\"" +
                 ", \"recordLastModifierLogin\": \"%s\"" +
                 ", \"recordLastModifiedDate\": \"%s\"" +
+                ", \"fromAccount\": \"%s\"" +
+                ", \"toAccount\": \"%s\"" +
                 "}",
                 recordId,
                 name,
-                category,
+                category.getName(),
                 moneyAmount,
                 dateFormat.format(new Date(transactionDate)),
-                recordCreatorLogin,
+                recordCreatorUser.getLogin(),
                 dateFormat.format(new Date(recordCreationTimestamp)),
-                recordLastModifierLogin,
-                dateFormat.format(new Date(recordLastModifiedDate)));
+                recordLastModifierUser.getLogin(),
+                dateFormat.format(new Date(recordLastModifiedDate)),
+                fromAccount.getName(),
+                toAccount.getName());
     }
 
 }
