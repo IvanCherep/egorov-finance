@@ -29,7 +29,7 @@ public class Record {
 
     private final Account toAccount;
 
-    private final Currency currency = Currency.RUBBLE;
+    private final Currency currency;
 
     private final static DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -37,7 +37,7 @@ public class Record {
     public Record(Long recordId, String name, Category category,
                   Double moneyAmount, long transactionDate, User recordCreatorUser,
                   long recordCreationTimestamp, User recordLastModifierUser, long recordLastModifiedDate,
-                  Account fromAccount, Account toAccount) {
+                  Account fromAccount, Account toAccount, Currency currency) {
         this.recordId = recordId;
         this.name = name;
         this.category = category;
@@ -49,6 +49,7 @@ public class Record {
         this.recordLastModifiedDate = recordLastModifiedDate;
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
+        this.currency = currency;
     }
 
     public User getRecordCreatorUser() {
@@ -87,7 +88,7 @@ public class Record {
                 dateFormat.format(new Date(recordLastModifiedDate)),
                 fromAccount.getName(),
                 toAccount.getName(),
-                currency);
+                currency.getCurrencyName());
     }
 
 }

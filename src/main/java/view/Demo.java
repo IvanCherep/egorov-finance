@@ -17,25 +17,25 @@ public class Demo {
         record.put("category", "Канцтовары");
         record.put("moneyAmount", 40.99);
         record.put("transactionDate", new Date().getTime());
-        records.add(recordService.createRecord(record));
+        recordService.createRecord(record);
 
         record.put("name", "Тетрадь");
         record.put("category", "Канцтовары");
         record.put("moneyAmount", 75.50);
         record.put("transactionDate", new Date().getTime());
-        records.add(recordService.createRecord(record));
+        recordService.createRecord(record);
 
         record.put("name", "Кофе");
         record.put("category", "Продукты");
         record.put("moneyAmount", 300.00);
         record.put("transactionDate", new Date().getTime());
-        records.add(recordService.createRecord(record));
+        recordService.createRecord(record);
 
         record.put("name", "Молоко");
         record.put("category", "Продукты");
         record.put("moneyAmount", 60.00);
         record.put("transactionDate", new Date().getTime());
-        records.add(recordService.createRecord(record));
+        recordService.createRecord(record);
 
         for (Record r: records) {
             System.out.println(r);

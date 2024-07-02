@@ -5,10 +5,10 @@ import java.util.Map;
 
 public interface UserService {
 
-    public User createUser(Map<String, Object> userValues);
+    public boolean createUser(Map<String, Object> userValues);
+
+    public boolean modifyUser(Map<String, Object> modifiedValues, User originalUser);
 
     public User getUserById(long id);
-
-    public User modifyUser(Map<String, Object> modifiedValues, User originalUser);
 
 }

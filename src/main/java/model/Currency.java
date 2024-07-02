@@ -1,8 +1,18 @@
 package model;
 
-public enum Currency {
+public class Currency {
 
-    RUBBLE,
-    DOLLAR;
+    private final long currencyId;
+
+    private final String currencyName;
+
+    private Currency (long currencyId, String currencyName) {
+        this.currencyId = currencyId;
+        this.currencyName = currencyName;
+    }
+
+    public String getCurrencyName() {
+        return currencyName;
+    }
 
 }

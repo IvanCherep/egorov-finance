@@ -1,5 +1,6 @@
 package view;
 
+import controller.Controller;
 import model.Record;
 import model.services.RecordService;
 import model.services.impl.RecordServiceImpl;
@@ -17,6 +18,7 @@ public class Console {
         List<Record> records = new ArrayList<>();
         boolean stopFlag = false;
         RecordService recordService = new RecordServiceImpl();
+        Controller controller = new Controller();
 
         while(!stopFlag) {
             printMenu();
@@ -25,9 +27,13 @@ public class Console {
                 case 1:
                     // Добавить запись о расходе
                     Map<String, Object> recordValues = readRecord(input);
-                    Record record = recordService.createRecord(recordValues);
-                    records.add(record);
-                    System.out.println("Запись " + record.toString() + " успешно добавлена");
+                    boolean isRecordCreated = controller.createRecord(recordValues);
+                    while (!isRecordCreated) {
+                        System.out.println("Ошибка! Запись не создана!");
+                        recordValues = readRecord(input);
+                        isRecordCreated = controller.createRecord(recordValues);
+                    }
+                    System.out.println("Запись успешно добавлена");
                     break;
                 case 2:
                     // Добавить запись о доходе
@@ -65,24 +71,31 @@ public class Console {
     private static Map<String, Object> readRecord(Scanner input) {
         Map<String, Object> recordValues = new HashMap<>();
         input.nextLine();
-        System.out.print("Название: ");
-        String name = input.nextLine();
+        String name = readRecordName(input);
         recordValues.put("name", name);
-        System.out.print("Категория: ");
-        String category = input.nextLine();
+        String category = readRecordCategory(input);
         recordValues.put("category", category);
-        System.out.print("Сумма: ");
         Double moneyAmount = readMoneyAmount(input);
         recordValues.put("moneyAmount", moneyAmount);
         input.nextLine();
-        System.out.print("Дата (дд.мм.гггг): ");
         Long transactionDate = readDate(input);
         recordValues.put("transactionDate", transactionDate);
 
         return recordValues;
     }
 
+    private static String readRecordName(Scanner input) {
+        System.out.print("Название: ");
+        return input.nextLine();
+    }
+
+    private static String readRecordCategory(Scanner input) {
+        System.out.print("Категория: ");
+        return input.nextLine();
+    }
+
     private static double readMoneyAmount(Scanner input) {
+        System.out.print("Сумма: ");
         while (!input.hasNextDouble()) {
             input.nextLine();
             System.out.println("Ошибка! Неверный формат.");
@@ -92,6 +105,7 @@ public class Console {
     }
 
     private static long readDate(Scanner input) {
+        System.out.print("Дата (дд.мм.гггг): ");
         String strTransactionDate = input.nextLine();
         Date date = new Date();
         if (strTransactionDate.isEmpty()) {

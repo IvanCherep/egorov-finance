@@ -5,15 +5,20 @@ import model.Record;
 import model.User;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public interface RecordService {
 
-    public Record createRecord(Map<String, Object> recordValues);
+    /**
+    /* True успешно созданный объект. Как дополнительная проверка, в случае, если createId равен нулю, то это ошибка
+    **/
+    // Подумать насчет createdId и то насколько он нужен. И какая у него ценность
+    public boolean createRecord(Map<String, Object> recordValues);
 
-    public Record modifyRecord(Map<String, Object> recordValues, Record originalRecord);
+    public boolean modifyRecord(Map<String, Object> recordValues, Record originalRecord);
 
-    public Record getRecordById(long id);
+    public Record getRecordByIds(List<Long> ids);
 
     public double getTotalBalance(Date date, User user);
 

@@ -6,10 +6,10 @@ import java.util.Map;
 
 public interface AccountService {
 
-    public Account createAccount(Map<String, Object> accountValues);
+    public boolean createAccount(Map<String, Object> accountValues);
+
+    public boolean modifyAccount(Map<String, Object> modifiedValues, Account originalAccount);
 
     public Account getAccountById(long id);
-
-    public Account modifyAccount(Map<String, Object> modifiedValues, Account originalAccount);
 
 }

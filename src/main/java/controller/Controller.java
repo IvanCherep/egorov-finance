@@ -1,6 +1,5 @@
 package controller;
 
-import model.RecordResponseStatus;
 import model.services.RecordService;
 import model.services.impl.RecordServiceImpl;
 
@@ -14,21 +13,19 @@ public class Controller {
         this.recordService = new RecordServiceImpl();
     }
 
-    public RecordResponseStatus createRecord(Map<String, Object> recordValues) {
+    public boolean createRecord(Map<String, Object> recordValues) {
         if (!recordValues.containsKey("name")) {
-            return new RecordResponseStatus(null, RecordResponseStatus.NO_NAME);
+            return false;
         } else if (!recordValues.containsKey("category")) {
-            return new RecordResponseStatus(null, RecordResponseStatus.NO_CATEGORY);
+            return false;
         } else if (!recordValues.containsKey("moneyAmount")) {
-            return new RecordResponseStatus(null, RecordResponseStatus.NO_MONEY_AMOUNT);
+            return false;
         } else if (!recordValues.containsKey("transactionDate")) {
             recordValues.put("transactionDate", System.currentTimeMillis());
         }
 
-        return new RecordResponseStatus(
-                recordService.createRecord(recordValues),
-                RecordResponseStatus.OK
-        );
+
+        return recordService.createRecord(recordValues);
     }
 
 }

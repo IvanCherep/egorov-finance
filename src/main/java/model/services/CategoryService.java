@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface CategoryService {
 
-    public Category createCategory(Map<String, Object> categoryValues);
+    public boolean createCategory(Map<String, Object> categoryValues);
 
     public Category getCategoryById(long id);
 

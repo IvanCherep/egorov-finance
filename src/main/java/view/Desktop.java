@@ -2,7 +2,6 @@ package view;
 
 import controller.Controller;
 import model.Category;
-import model.RecordResponseStatus;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,31 +21,25 @@ public class Desktop {
         JPanel panel = new JPanel();
         JButton createRecord = new JButton("Создать запись");
         JButton exitProgram = new JButton("Выйти из программы");
-        JTextField nameField = new JTextField(10);
-        JTextField categoryField = new JTextField(10);
-        JTextField moneyAmountField = new JTextField(10);
 
         createRecord.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Map<String, Object> recordValues = new HashMap<>();
-                String name = JOptionPane.showInputDialog("Введите название");
-                recordValues.put("name", name);
-                String categoryString = JOptionPane.showInputDialog("Введите категорию");
-                Category category = new Category(categoryCounter++, categoryString);
-                recordValues.put("category", category);
-                Double moneyAmount = readMoneyAmount(false);
-                recordValues.put("moneyAmount", moneyAmount);
-                RecordResponseStatus recordResponseStatus = controller.createRecord(recordValues);
-                if (recordResponseStatus.getResponseStatus() == 0) {
+                Map<String, Object> recordValues = readRecordValues();
+                boolean isRecordCreated = controller.createRecord(recordValues);
+                while (!isRecordCreated) {
                     JOptionPane.showMessageDialog(
                             null,
-                            recordResponseStatus.getRecord().toString()
+                            "Ошибка. Запись не создана!"
                     );
-                } else if (recordResponseStatus.getResponseStatus() == 1) {
-                    name = JOptionPane.showInputDialog("Ошибка! Введите название");
-                    recordValues.put("name", name);
+                    isRecordCreated = controller.createRecord(readRecordValues());
                 }
+
+                JOptionPane.showMessageDialog(
+                            null,
+                            "Запись успешно сохранена"
+                            //recordResponseStatus.getRecord().toString()
+                    );
             }
         });
 
@@ -59,14 +52,23 @@ public class Desktop {
 
         panel.add(createRecord);
         panel.add(exitProgram);
-        panel.add(nameField);
-        panel.add(categoryField);
-        panel.add(moneyAmountField);
 
         frame.setTitle("egorov-finance");
         frame.add(panel, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private static Map<String, Object> readRecordValues() {
+        Map<String, Object> recordValues = new HashMap<>();
+        String name = JOptionPane.showInputDialog("Введите название");
+        recordValues.put("name", name);
+        String categoryString = JOptionPane.showInputDialog("Введите категорию");
+        Category category = new Category(categoryCounter++, categoryString);
+        recordValues.put("category", category);
+        Double moneyAmount = readMoneyAmount(false);
+        recordValues.put("moneyAmount", moneyAmount);
+        return recordValues;
     }
 
     private static double readMoneyAmount(boolean isThereTypeError) {
