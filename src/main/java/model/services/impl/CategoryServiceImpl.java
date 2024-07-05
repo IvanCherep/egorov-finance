@@ -4,6 +4,7 @@ import model.Category;
 import model.DatabaseConnection;
 import model.services.CategoryService;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     static final String SELECT_ALL_CATEGORIES = "SELECT id, name FROM categories";
     static final String SELECT_CATEGORY_BY_ID = "SELECT id, name FROM categories WHERE id = ?";
+//    static final String INSERT_CATEGORY = "INSERT INTO categories VALUES (name) "
 
     @Override
     public boolean createCategory(Map<String, Object> categoryValues) {
-        return false;
+        Connection connection = DatabaseConnection.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CATEGORY_BY_ID);
+        } catch (SQLException ex) {
+            return false;
+        }
+        return true;
+
     }
 
     @Override
