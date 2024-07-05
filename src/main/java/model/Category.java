@@ -11,8 +11,24 @@ public class Category {
         this.name = name;
     }
 
+    public long getId() {
+        return categoryId;
+    }
+
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "{" +
+                "\"id\": %d, " +
+                "\"name\": %s" +
+                "}",
+                categoryId,
+                name
+        );
     }
 
 }

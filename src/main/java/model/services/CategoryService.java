@@ -2,6 +2,7 @@ package model.services;
 
 import model.Category;
 
+import java.util.List;
 import java.util.Map;
 
 public interface CategoryService {
@@ -10,6 +11,8 @@ public interface CategoryService {
 
     public Category getCategoryById(long id);
 
-    public Category modifyCategory(Map<String, Object> modifiedValues, Category originalCategory);
+    public List<Category> getCategories();
+
+    public boolean modifyCategory(Map<String, Object> modifiedValues, Category originalCategory);
 
 }

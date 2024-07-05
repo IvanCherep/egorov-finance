@@ -30,8 +30,7 @@ public class Console {
                     boolean isRecordCreated = controller.createRecord(recordValues);
                     while (!isRecordCreated) {
                         System.out.println("Ошибка! Запись не создана!");
-                        recordValues = readRecord(input);
-                        isRecordCreated = controller.createRecord(recordValues);
+                        isRecordCreated = controller.createRecord(readRecord(input));
                     }
                     System.out.println("Запись успешно добавлена");
                     break;
@@ -96,11 +95,13 @@ public class Console {
 
     private static double readMoneyAmount(Scanner input) {
         System.out.print("Сумма: ");
+        // controller.validateRecord(Map, "moneyAmount")
         while (!input.hasNextDouble()) {
             input.nextLine();
             System.out.println("Ошибка! Неверный формат.");
             System.out.print("Сумма: ");
         }
+
         return input.nextDouble();
     }
 

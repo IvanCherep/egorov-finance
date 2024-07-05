@@ -70,7 +70,7 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public Record getRecordByIds(List<Long> ids) {
+    public List<Record> getRecordsByIds(List<Long> ids) {
         return null;
     }
 

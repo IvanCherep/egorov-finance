@@ -24,8 +24,20 @@ public class Controller {
             recordValues.put("transactionDate", System.currentTimeMillis());
         }
 
-
         return recordService.createRecord(recordValues);
+    }
+
+    public boolean validateRecord(Map<String, Object> recordValues) {
+
+        return false;
+    }
+
+    public boolean validateRecord(Map<String, Object> recordValues, String key) {
+        switch (key) {
+            case "moneyAmount":
+                return recordValues.get("moneyAmount") instanceof  Double;
+        }
+        return false;
     }
 
 }

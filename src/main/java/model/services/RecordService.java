@@ -18,7 +18,8 @@ public interface RecordService {
 
     public boolean modifyRecord(Map<String, Object> recordValues, Record originalRecord);
 
-    public Record getRecordByIds(List<Long> ids);
+    //Параметрический поиск записей? Дата начала и окончания
+    public List<Record> getRecordsByIds(List<Long> ids);
 
     public double getTotalBalance(Date date, User user);
 

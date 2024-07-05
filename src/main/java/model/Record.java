@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 // Модуль учета долгов?
+// Java persistance JPA (Java EE)
 public class Record {
 
     private final Long recordId;
@@ -13,6 +14,7 @@ public class Record {
 
     private final Category category;
 
+    //TODO поменять обертки на примитивы, если это нужно
     private final Double moneyAmount;
 
     private final long transactionDate;
