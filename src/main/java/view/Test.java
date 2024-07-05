@@ -2,6 +2,7 @@ package view;
 
 import model.Category;
 import model.DatabaseConnection;
+import model.DatabaseInitializer;
 import model.services.CategoryService;
 import model.services.impl.CategoryServiceImpl;
 
@@ -18,14 +19,16 @@ public class Test {
     static final String QUERY = "SELECT id, name FROM categories";
 
     public static void main(String[] args) {
-        CategoryService categoryService = new CategoryServiceImpl();
-        List<Category> categories = categoryService.getCategories();
-        for (Category category: categories) {
-            System.out.println(category);;
-        }
-
-        System.out.println();
-        System.out.println(categoryService.getCategoryById(2));
+        Connection connection = DatabaseConnection.getConnection();
+        DatabaseInitializer.initializeDB(connection);
+//        CategoryService categoryService = new CategoryServiceImpl();
+//        List<Category> categories = categoryService.getCategories();
+//        for (Category category: categories) {
+//            System.out.println(category);;
+//        }
+//
+//        System.out.println();
+//        System.out.println(categoryService.getCategoryById(2));
 //        Connection connection = DatabaseConnection.getConnection();
 //        try {
 //            Statement statement = connection.createStatement();
