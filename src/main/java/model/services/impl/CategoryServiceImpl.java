@@ -22,7 +22,6 @@ public class CategoryServiceImpl implements CategoryService {
             System.out.println("No name field error");
             return false;
         }
-
         Connection connection = DatabaseConnection.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY);
@@ -31,6 +30,12 @@ public class CategoryServiceImpl implements CategoryService {
         } catch (SQLException ex) {
             System.err.println("SQLException in createCategory method: " + ex.getMessage());
             return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing connection: " + e.getMessage());;
+            }
         }
 
         return true;
@@ -58,6 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
                 }
             }
         }
+
         return null;
     }
 

@@ -8,6 +8,7 @@ import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class DatabaseInitializer {
 
@@ -27,6 +28,14 @@ public class DatabaseInitializer {
         } catch (LiquibaseException e) {
             System.err.println("Liquibase can't update exception: " + e.getMessage());
             return false;
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Failed to close DB connection: " + e.getMessage());
+            }
         }
 
         return true;
