@@ -14,18 +14,26 @@ public class CategoryServiceImpl implements CategoryService {
 
     static final String SELECT_ALL_CATEGORIES = "SELECT id, name FROM categories";
     static final String SELECT_CATEGORY_BY_ID = "SELECT id, name FROM categories WHERE id = ?";
-//    static final String INSERT_CATEGORY = "INSERT INTO categories VALUES (name) "
+    static final String INSERT_CATEGORY = "INSERT INTO categories (name) VALUES (?)";
 
     @Override
     public boolean createCategory(Map<String, Object> categoryValues) {
-        Connection connection = DatabaseConnection.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CATEGORY_BY_ID);
-        } catch (SQLException ex) {
+        if (!categoryValues.containsKey("name")) {
+            System.out.println("No name field error");
             return false;
         }
-        return true;
 
+        Connection connection = DatabaseConnection.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY);
+            preparedStatement.setString(1, (String) categoryValues.get("name"));
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("SQLException in createCategory method: " + ex.getMessage());
+            return false;
+        }
+
+        return true;
     }
 
     @Override

@@ -10,7 +10,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //TODO подумать над бекапом
 //TODO написать имплементацию для всех сервисов
@@ -21,6 +23,12 @@ public class Test {
     public static void main(String[] args) {
         Connection connection = DatabaseConnection.getConnection();
         DatabaseInitializer.initializeDB(connection);
+        System.out.println("Hello");
+        CategoryService categoryService = new CategoryServiceImpl();
+        Map<String, Object> categoryValues = new HashMap<>();
+        categoryValues.put("name", "Продукты");
+        boolean result = categoryService.createCategory(categoryValues);
+        System.out.println(result);
 //        CategoryService categoryService = new CategoryServiceImpl();
 //        List<Category> categories = categoryService.getCategories();
 //        for (Category category: categories) {
