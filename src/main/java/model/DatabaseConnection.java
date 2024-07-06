@@ -32,9 +32,6 @@ public class DatabaseConnection {
             System.err.println("Connection error: " + e.getMessage());
         }
 
-        //TODO логин и пароль храниться в файле настроек, файл настроек добавить в .gitignore
-        //прописать на гитхабе, как создать файл для подключения к бд (db.config в папке resources)
-
         return connection;
     }
 
