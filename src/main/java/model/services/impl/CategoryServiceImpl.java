@@ -13,10 +13,33 @@ public class CategoryServiceImpl implements CategoryService {
 
     static final String SELECT_ALL_CATEGORIES = "SELECT id, name FROM categories";
     static final String SELECT_CATEGORY_BY_ID = "SELECT id, name FROM categories WHERE id = ?";
+    static final String INSERT_CATEGORY = "INSERT INTO categories (name) VALUES (?)";
+    static final String UPDATE_CATEGORY = "UPDATE categories SET name = ? WHERE id = ?";
 
     @Override
     public boolean createCategory(Map<String, Object> categoryValues) {
-        return false;
+        if (!categoryValues.containsKey("name")) {
+            System.out.println("No name field error");
+            return false;
+        }
+        Connection connection = DatabaseConnection.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY);
+            preparedStatement.setString(1, (String) categoryValues.get("name"));
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("SQLException in createCategory method: " + ex.getMessage());
+            return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing connection: " + e.getMessage());
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -41,6 +64,7 @@ public class CategoryServiceImpl implements CategoryService {
                 }
             }
         }
+
         return null;
     }
 
@@ -71,8 +95,31 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean modifyCategory(Map<String, Object> modifiedValues, Category originalCategory) {
-        long categoryId = originalCategory.getId();
+        Connection connection = DatabaseConnection.getConnection();
+        if (connection == null) {
+            return false;
+        }
 
-        return false;
+        long categoryId = originalCategory.getId();
+        if (!modifiedValues.containsKey("name")) {
+            modifiedValues.put("name", originalCategory.getName());
+        }
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CATEGORY);
+            preparedStatement.setString(1, (String) modifiedValues.get("name"));
+            preparedStatement.setLong(2, categoryId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("SQL error: " + e.getMessage());
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.err.println("Failed to close connection error: " + e.getMessage());
+                return false;
+            }
+        }
+
+        return true;
     }
 }
