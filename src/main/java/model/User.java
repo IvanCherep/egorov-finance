@@ -2,22 +2,22 @@ package model;
 
 public class User {
 
-    public final long userId;
+    private final long id;
 
-    public final String login;
+    private final String login;
 
-    public final String name;
+    private final String name;
 
-    public final String surname;
+    private final String surname;
 
-    public final String email;
+    private final String email;
 
-    public final String password;
+    private final String password;
 
-    public final String phoneNumber;
+    private final String phoneNumber;
 
-    public User(long userId, String login, String name, String surname, String email, String password, String phoneNumber) {
-        this.userId = userId;
+    public User(long id, String login, String name, String surname, String email, String password, String phoneNumber) {
+        this.id = id;
         this.login = login;
         this.name = name;
         this.surname = surname;
@@ -26,7 +26,44 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String getLogin() {
         return login;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 }

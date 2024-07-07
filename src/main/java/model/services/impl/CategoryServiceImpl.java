@@ -69,31 +69,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getCategories() {
-        List<Category> categories = new ArrayList<>();
-        Connection connection = DatabaseConnection.getConnection();
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SELECT_ALL_CATEGORIES);
-            while (resultSet.next()) {
-                categories.add(new Category(resultSet.getLong("id"), resultSet.getString("name")));
-            }
-
-        } catch (SQLException e) {
-            System.err.println("SQL error: " + e.getMessage());
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    System.err.println("Error closing connection: " + e.getMessage());
-                }
-            }
-        }
-        return categories;
-    }
-
-    @Override
     public boolean modifyCategory(Map<String, Object> modifiedValues, Category originalCategory) {
         Connection connection = DatabaseConnection.getConnection();
         if (connection == null) {
@@ -121,5 +96,30 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         return true;
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        List<Category> categories = new ArrayList<>();
+        Connection connection = DatabaseConnection.getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SELECT_ALL_CATEGORIES);
+            while (resultSet.next()) {
+                categories.add(new Category(resultSet.getLong("id"), resultSet.getString("name")));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQL error: " + e.getMessage());
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing connection: " + e.getMessage());
+                }
+            }
+        }
+        return categories;
     }
 }
