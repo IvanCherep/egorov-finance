@@ -12,10 +12,11 @@
             <column name="name" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
+            <column name="is_income" type="boolean">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
-    </changeSet>
 
-    <changeSet id="2" author="iegorov">
         <createTable tableName="users">
             <column name="id" type="SERIAL" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -39,6 +40,236 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <createTable tableName="currencies">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sign" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="checking_accounts">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="records">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="money_amount" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_date" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="record_creator_user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="record_creation_timestamp" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="record_last_modifier_user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="record_last_modified_date" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from_checking_account_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to_checking_account_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="2" author="iegorov">
+        <addForeignKeyConstraint
+                baseTableName="checking_accounts"
+                baseColumnNames="user_id"
+                constraintName="fk_checking_accounts_users"
+                referencedTableName="users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="checking_accounts"
+                baseColumnNames="currency_id"
+                constraintName="fk_checking_accounts_currencies"
+                referencedTableName="currencies"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="records"
+                baseColumnNames="category_id"
+                constraintName="fk_records_categories"
+                referencedTableName="categories"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="records"
+                baseColumnNames="record_creator_user_id"
+                constraintName="fk_records_users_1"
+                referencedTableName="users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="records"
+                baseColumnNames="record_last_modifier_user_id"
+                constraintName="fk_records_users_2"
+                referencedTableName="users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="records"
+                baseColumnNames="from_checking_account_id"
+                constraintName="fk_records_checking_accounts_1"
+                referencedTableName="checking_accounts"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="records"
+                baseColumnNames="to_checking_account_id"
+                constraintName="fk_records_checking_accounts_2"
+                referencedTableName="checking_accounts"
+                referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="3" author="iegorov">
+        <insert tableName="categories">
+            <column name="id" valueSequenceNext="currencies_id_seq"/>
+            <column name="name" value="Продукты"/>
+            <column name="is_income" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="id" valueSequenceNext="currencies_id_seq"/>
+            <column name="name" value="Рестораны"/>
+            <column name="is_income" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="id" valueSequenceNext="currencies_id_seq"/>
+            <column name="name" value="Красота и здоровье"/>
+            <column name="is_income" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="id" valueSequenceNext="currencies_id_seq"/>
+            <column name="name" value="Одежда"/>
+            <column name="is_income" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="id" valueSequenceNext="currencies_id_seq"/>
+            <column name="name" value="Спорт"/>
+            <column name="is_income" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="id" valueSequenceNext="currencies_id_seq"/>
+            <column name="name" value="Подарки"/>
+            <column name="is_income" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="id" valueSequenceNext="currencies_id_seq"/>
+            <column name="name" value="Зарплата"/>
+            <column name="is_income" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="id" valueSequenceNext="currencies_id_seq"/>
+            <column name="name" value="Стипендия"/>
+            <column name="is_income" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="id" valueSequenceNext="currencies_id_seq"/>
+            <column name="name" value="Подарок"/>
+            <column name="is_income" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="users">
+            <column name="id" value="42"/>
+            <column name="login" value="sys"/>
+            <column name="name" value="System"/>
+            <column name="surname" value="User"/>
+            <column name="email" value="sys@sys.ru"/>
+            <column name="password" value="sys"/>
+            <column name="phone_number" value="+00000000000"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueSequenceNext="currencies_id_seq"/>
+            <column name="name" value="Рубль"/>
+            <column name="sign" value="₽"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueSequenceNext="currencies_id_seq"/>
+            <column name="name" value="Доллар"/>
+            <column name="sign" value="$"/>
+        </insert>
+
+        <insert tableName="checking_accounts">
+            <column name="id" valueSequenceNext="checking_accounts_id_seq"/>
+            <column name="user_id" value="42"/>
+            <column name="name" value="Расход"/>
+            <column name="currency_id" valueComputed="(SELECT id FROM currencies WHERE name = 'Рубль')"/>
+        </insert>
+
+        <insert tableName="checking_accounts">
+            <column name="id" valueSequenceNext="checking_accounts_id_seq"/>
+            <column name="user_id" value="42"/>
+            <column name="name" value="Доход"/>
+            <column name="currency_id" valueComputed="(SELECT id FROM currencies WHERE name = 'Рубль')"/>
+        </insert>
+
+        <insert tableName="checking_accounts">
+            <column name="id" valueSequenceNext="checking_accounts_id_seq"/>
+            <column name="user_id" value="42"/>
+            <column name="name" value="Т-Банк"/>
+            <column name="currency_id" valueComputed="(SELECT id FROM currencies WHERE name = 'Рубль')"/>
+        </insert>
+
+        <insert tableName="records">
+            <column name="id" valueSequenceNext="records_id_seq"/>
+            <column name="name" value="Молоко"/>
+            <column name="category_id" valueComputed="(SELECT id FROM categories WHERE name = 'Продукты')"/>
+            <column name="money_amount" value="65.99"/>
+            <column name="transaction_date" value="1720524402"/>
+            <column name="record_creator_user_id" value="42"/>
+            <column name="record_creation_timestamp" value="1720524402"/>
+            <column name="record_last_modifier_user_id" value="42"/>
+            <column name="record_last_modified_date" value="1720524402"/>
+            <column name="from_checking_account_id"
+                    valueComputed="(SELECT id FROM checking_accounts WHERE name = 'Т-Банк')"
+            />
+            <column name="to_checking_account_id"
+                    valueComputed="(SELECT id FROM checking_accounts WHERE name = 'Расход')"
+            />
+        </insert>
+    </changeSet>
 </databaseChangeLog>

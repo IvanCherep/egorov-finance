@@ -1,7 +1,7 @@
 package model.services.impl;
 
 import model.Category;
-import model.DatabaseConnection;
+import model.db.DatabaseConnection;
 import model.services.CategoryService;
 
 import java.sql.*;
@@ -11,9 +11,9 @@ import java.util.Map;
 
 public class CategoryServiceImpl implements CategoryService {
 
-    static final String SELECT_ALL_CATEGORIES = "SELECT id, name FROM categories";
-    static final String SELECT_CATEGORY_BY_ID = "SELECT id, name FROM categories WHERE id = ?";
-    static final String INSERT_CATEGORY = "INSERT INTO categories (name) VALUES (?)";
+    static final String SELECT_ALL_CATEGORIES = "SELECT id, name, is_income FROM categories";
+    static final String SELECT_CATEGORY_BY_ID = "SELECT id, name, is_income FROM categories WHERE id = ?";
+    static final String INSERT_CATEGORY = "INSERT INTO categories (name, is_income) VALUES (?, ?)";
     static final String UPDATE_CATEGORY = "UPDATE categories SET name = ? WHERE id = ?";
 
     @Override
@@ -22,21 +22,15 @@ public class CategoryServiceImpl implements CategoryService {
             System.out.println("No name field error");
             return false;
         }
-        Connection connection = DatabaseConnection.getConnection();
-        try {
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY);
             preparedStatement.setString(1, (String) categoryValues.get("name"));
+            preparedStatement.setBoolean(1, (Boolean) categoryValues.get("is_income"));
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             System.err.println("SQLException in createCategory method: " + ex.getMessage());
             return false;
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                System.err.println("Error closing connection: " + e.getMessage());
-                return false;
-            }
         }
 
         return true;
@@ -44,25 +38,20 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getCategoryById(long id) {
-        Connection connection = DatabaseConnection.getConnection();
-        try {
+        ;
+        try (Connection connection = DatabaseConnection.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CATEGORY_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                return new Category(resultSet.getLong("id"), resultSet.getString("name"));
+                return new Category(
+                        resultSet.getLong("id"),
+                        resultSet.getString("name"),
+                        resultSet.getBoolean("is_income"));
             }
 
         } catch (SQLException e) {
             System.err.println("SQL error: " + e.getMessage());
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    System.err.println("Error closing connection: " + e.getMessage());
-                }
-            }
         }
 
         return null;
@@ -101,25 +90,21 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getCategories() {
         List<Category> categories = new ArrayList<>();
-        Connection connection = DatabaseConnection.getConnection();
-        try {
+        try (Connection connection = DatabaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SELECT_ALL_CATEGORIES);
             while (resultSet.next()) {
-                categories.add(new Category(resultSet.getLong("id"), resultSet.getString("name")));
+                categories.add(new Category(
+                        resultSet.getLong("id"),
+                        resultSet.getString("name"),
+                        resultSet.getBoolean("is_income")
+                ));
             }
 
         } catch (SQLException e) {
             System.err.println("SQL error: " + e.getMessage());
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    System.err.println("Error closing connection: " + e.getMessage());
-                }
-            }
         }
+
         return categories;
     }
 }

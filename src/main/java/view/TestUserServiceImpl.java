@@ -1,6 +1,8 @@
 package view;
 
 import model.*;
+import model.db.DatabaseConnection;
+import model.db.DatabaseInitializer;
 import model.services.UserService;
 import model.services.impl.UserServiceImpl;
 

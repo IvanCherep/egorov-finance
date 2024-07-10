@@ -1,21 +1,20 @@
 package model.services.impl;
 
-import model.Category;
-import model.DatabaseConnection;
+import model.db.DatabaseConnection;
 import model.User;
 import model.services.UserService;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class UserServiceImpl implements UserService {
 
-    private final String INSERT_USER = "INSERT INTO users (login, name, surname, email, password, phone_number)" +
+    private final String INSERT_USER =
+            "INSERT INTO users (login, name, surname, email, password, phone_number)" +
             "VALUES (?, ?, ?, ?, ?, ?)";
 
-    private final String UPDATE_USER = "UPDATE users " +
+    private final String UPDATE_USER =
+            "UPDATE users " +
             "SET login = ?, " +
             "name = ?, " +
             "surname = ?, " +
@@ -24,7 +23,9 @@ public class UserServiceImpl implements UserService {
             "phone_number = ? " +
             "WHERE id = ?";
 
-    public final String SELECT_USER_BY_ID = "SELECT login, name, surname, email, password, phone_number FROM users WHERE id = ?";
+    public final String SELECT_USER_BY_ID =
+            "SELECT login, name, surname, email, password, phone_number " +
+            "FROM users WHERE id = ?";
 
 
     @Override
@@ -129,8 +130,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(long id) {
         User user = null;
-        Connection connection = DatabaseConnection.getConnection();
-        try {
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -147,15 +148,8 @@ public class UserServiceImpl implements UserService {
 
         } catch (SQLException e) {
             System.err.println("SQL error: " + e.getMessage());
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    System.err.println("Error closing connection: " + e.getMessage());
-                }
-            }
         }
+
         return user;
     }
 }

@@ -1,6 +1,6 @@
 package model.services;
 
-import model.Account;
+import model.CheckingAccount;
 import model.Record;
 import model.User;
 
@@ -25,8 +25,11 @@ public interface RecordService {
 
     public double getTotalBalanceByDate(Date dateFrom, Date dateTo, User user);
 
-    public double getAccountBalance(Date date, User user, Account account);
+    public double getAccountBalance(Date date, User user, CheckingAccount checkingAccount);
 
-    public double getAccountBalanceByDate(Date dateFrom, Date dateTo, User user, Account account);
+    public double getAccountBalanceByDate(Date dateFrom, Date dateTo, User user, CheckingAccount checkingAccount);
 
+    public List<Record> getRecords();
+
+    public List<Record> getRecordsByCheckingAccount(Long checkingAccountId);
 }

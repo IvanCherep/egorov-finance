@@ -1,4 +1,4 @@
-package model;
+package model.db;
 
 import liquibase.Liquibase;
 import liquibase.database.DatabaseFactory;
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class DatabaseInitializer {
 
-    public static final String CHANGELOG_FILE = "changelog.xml";
+    private static final String CHANGELOG_FILE = "changelog.xml";
 
     public static boolean initializeDB(Connection connection) {
         try {

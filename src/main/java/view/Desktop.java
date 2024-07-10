@@ -64,8 +64,8 @@ public class Desktop {
         String name = JOptionPane.showInputDialog("Введите название");
         recordValues.put("name", name);
         String categoryString = JOptionPane.showInputDialog("Введите категорию");
-        Category category = new Category(categoryCounter++, categoryString);
-        recordValues.put("category", category);
+//        Category category = new Category(categoryCounter++, categoryString);
+//        recordValues.put("category", category);
         Double moneyAmount = readMoneyAmount(false);
         recordValues.put("moneyAmount", moneyAmount);
         return recordValues;
