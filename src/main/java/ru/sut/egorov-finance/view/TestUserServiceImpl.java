@@ -1,8 +1,9 @@
 package view;
 
 import model.*;
-import model.db.DatabaseConnection;
-import model.db.DatabaseInitializer;
+import db.DatabaseConnection;
+import db.DatabaseInitializer;
+import model.User;
 import model.services.UserService;
 import model.services.impl.UserServiceImpl;
 
@@ -10,8 +11,6 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO подумать над бекапом
-//TODO написать имплементацию для всех сервисов
 public class TestUserServiceImpl {
 
     public static void main(String[] args) {

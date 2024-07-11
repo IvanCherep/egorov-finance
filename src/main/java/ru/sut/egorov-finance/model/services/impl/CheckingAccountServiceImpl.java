@@ -2,7 +2,7 @@ package model.services.impl;
 
 import model.CheckingAccount;
 import model.Currency;
-import model.db.DatabaseConnection;
+import db.DatabaseConnection;
 import model.User;
 import model.services.CheckingAccountService;
 

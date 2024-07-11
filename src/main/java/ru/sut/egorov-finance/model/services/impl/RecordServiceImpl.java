@@ -1,11 +1,14 @@
 package model.services.impl;
 
 import model.*;
+import model.Category;
+import model.CheckingAccount;
+import model.Currency;
 import model.Record;
-import model.db.DatabaseConnection;
+import db.DatabaseConnection;
+import model.User;
 import model.services.RecordService;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -189,7 +192,6 @@ public class RecordServiceImpl implements RecordService {
             System.err.println("No category_id field error");
             result = false;
         }
-        //TODO сингалтон на правила окруления
         if (!recordValues.containsKey("money_amount")) {
             System.err.println("No money_amount field error");
             result = false;
@@ -259,22 +261,22 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public double getTotalBalance(Date date, User user) {
+    public double getCurrentBalance(CheckingAccount checkingAccount) {
         return 0;
     }
 
     @Override
-    public double getTotalBalanceByDate(Date dateFrom, Date dateTo, User user) {
+    public double getCheckingAccountBalanceByDate(Date dateFrom, Date dateTo, CheckingAccount checkingAccount) {
         return 0;
     }
 
     @Override
-    public double getAccountBalance(Date date, User user, CheckingAccount checkingAccount) {
+    public double getAccountBalanceByFilter(Map<String, Object> filters) {
         return 0;
     }
 
     @Override
-    public double getAccountBalanceByDate(Date dateFrom, Date dateTo, User user, CheckingAccount checkingAccount) {
+    public double getCheckingAccountsRecordsByFilter(Map<String, Object> filters) {
         return 0;
     }
 

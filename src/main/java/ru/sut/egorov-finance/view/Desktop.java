@@ -1,7 +1,6 @@
 package view;
 
 import controller.Controller;
-import model.Category;
 
 import javax.swing.*;
 import java.awt.*;

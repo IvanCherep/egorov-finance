@@ -1,8 +1,8 @@
 package view;
 
 import model.CheckingAccount;
-import model.db.DatabaseConnection;
-import model.db.DatabaseInitializer;
+import db.DatabaseConnection;
+import db.DatabaseInitializer;
 import model.services.CheckingAccountService;
 import model.services.UserService;
 import model.services.impl.CheckingAccountServiceImpl;

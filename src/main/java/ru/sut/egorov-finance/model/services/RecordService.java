@@ -1,15 +1,11 @@
 package model.services;
 
-import model.CheckingAccount;
 import model.Record;
-import model.User;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public interface RecordService {
-
     /**
     /* True успешно созданный объект. Как дополнительная проверка, в случае, если createId равен нулю, то это ошибка
     **/
@@ -21,15 +17,10 @@ public interface RecordService {
     //Параметрический поиск записей? Дата начала и окончания
     public List<Record> getRecordsByIds(List<Long> ids);
 
-    public double getTotalBalance(Date date, User user);
+    public double getAccountBalanceByFilter(Map<String, Object> filters);
 
-    public double getTotalBalanceByDate(Date dateFrom, Date dateTo, User user);
-
-    public double getAccountBalance(Date date, User user, CheckingAccount checkingAccount);
-
-    public double getAccountBalanceByDate(Date dateFrom, Date dateTo, User user, CheckingAccount checkingAccount);
-
-    public List<Record> getRecords();
+    // Если нет фильтров, то метод возвращает все записи
+    public List<Record> getCheckingAccountsRecordsByFilter(Map<String, Object> filters);
 
     public List<Record> getRecordsByCheckingAccount(Long checkingAccountId);
 }

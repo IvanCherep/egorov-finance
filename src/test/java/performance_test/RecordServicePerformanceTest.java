@@ -1,13 +1,24 @@
 package performance_test;
 
 import model.*;
-import model.Record;
-import model.db.DatabaseConnection;
-import model.db.DatabaseInitializer;
-import model.services.*;
-import model.services.impl.*;
+import db.DatabaseConnection;
+import db.DatabaseInitializer;
+import model.Category;
+import model.CheckingAccount;
+import model.Currency;
+import model.User;
+import model.services.CategoryService;
+import model.services.CheckingAccountService;
+import model.services.CurrencyService;
+import model.services.RecordService;
+import model.services.UserService;
+import model.services.impl.CategoryServiceImpl;
+import model.services.impl.CheckingAccountServiceImpl;
+import model.services.impl.CurrencyServiceImpl;
+import model.services.impl.RecordServiceImpl;
+import model.services.impl.RecordServiceSlowImpl;
+import model.services.impl.UserServiceImpl;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class RecordServicePerformanceTest {
 

@@ -1,7 +1,7 @@
 package model.services.impl;
 
 import model.Category;
-import model.db.DatabaseConnection;
+import db.DatabaseConnection;
 import model.services.CategoryService;
 
 import java.sql.*;

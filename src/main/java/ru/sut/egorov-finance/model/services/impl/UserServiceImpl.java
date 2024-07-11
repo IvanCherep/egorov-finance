@@ -1,6 +1,6 @@
 package model.services.impl;
 
-import model.db.DatabaseConnection;
+import db.DatabaseConnection;
 import model.User;
 import model.services.UserService;
 

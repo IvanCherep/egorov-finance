@@ -1,8 +1,9 @@
 package model.services.impl;
 
 import model.*;
+import model.CheckingAccount;
 import model.Record;
-import model.db.DatabaseConnection;
+import db.DatabaseConnection;
 import model.services.CategoryService;
 import model.services.CheckingAccountService;
 import model.services.RecordService;
@@ -49,22 +50,22 @@ public class RecordServiceSlowImpl implements RecordService {
     }
 
     @Override
-    public double getTotalBalance(Date date, User user) {
+    public double getCurrentBalance(CheckingAccount checkingAccount) {
         return 0;
     }
 
     @Override
-    public double getTotalBalanceByDate(Date dateFrom, Date dateTo, User user) {
+    public double getCheckingAccountBalanceByDate(Date dateFrom, Date dateTo, CheckingAccount checkingAccount) {
         return 0;
     }
 
     @Override
-    public double getAccountBalance(Date date, User user, CheckingAccount checkingAccount) {
+    public double getAccountBalanceByFilter(Map<String, Object> filters) {
         return 0;
     }
 
     @Override
-    public double getAccountBalanceByDate(Date dateFrom, Date dateTo, User user, CheckingAccount checkingAccount) {
+    public double getCheckingAccountsRecordsByFilter(Map<String, Object> filters) {
         return 0;
     }
 
@@ -76,9 +77,9 @@ public class RecordServiceSlowImpl implements RecordService {
     @Override
     public List<Record> getRecordsByCheckingAccount(Long checkingAccountId) {
         List<Record> records = new ArrayList<>();
-        CategoryService categoryService = new CategoryServiceImpl();
-        UserService userService = new UserServiceImpl();
-        CheckingAccountService checkingAccountService = new CheckingAccountServiceImpl();
+        CategoryService categoryService = new model.services.impl.CategoryServiceImpl();
+        UserService userService = new model.services.impl.UserServiceImpl();
+        CheckingAccountService checkingAccountService = new model.services.impl.CheckingAccountServiceImpl();
         try (Connection connection = DatabaseConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_RECORDS_BY_CHECKING_ACCOUNT);
             preparedStatement.setLong(1, checkingAccountId);

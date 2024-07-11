@@ -1,7 +1,7 @@
 package model.services.impl;
 
 import model.Currency;
-import model.db.DatabaseConnection;
+import db.DatabaseConnection;
 import model.services.CurrencyService;
 
 import java.sql.*;

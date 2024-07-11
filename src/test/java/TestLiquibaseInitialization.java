@@ -1,5 +1,5 @@
-import model.db.DatabaseConnection;
-import model.db.DatabaseInitializer;
+import db.DatabaseConnection;
+import db.DatabaseInitializer;
 
 import java.sql.Connection;
 

@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Класс пользователя, привязан к конкретному человеку
+ */
 public class User {
 
     private final long id;

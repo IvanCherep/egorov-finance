@@ -2,8 +2,6 @@ package view;
 
 import controller.Controller;
 import model.Record;
-import model.services.RecordService;
-import model.services.impl.RecordServiceImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,40 +15,40 @@ public class Console {
 
         List<Record> records = new ArrayList<>();
         boolean stopFlag = false;
-        RecordService recordService = new RecordServiceImpl();
-        Controller controller = new Controller();
 
         while(!stopFlag) {
             printMenu();
             int choice = input.nextInt();
             switch(choice) {
                 case 1:
-                    // Добавить запись о расходе
-                    Map<String, Object> recordValues = readRecord(input);
-                    boolean isRecordCreated = controller.createRecord(recordValues);
-                    while (!isRecordCreated) {
-                        System.out.println("Ошибка! Запись не создана!");
-                        isRecordCreated = controller.createRecord(readRecord(input));
-                    }
-                    System.out.println("Запись успешно добавлена");
+                    // Добавить расход
+                    addRecord(input, false);
                     break;
                 case 2:
-                    // Добавить запись о доходе
+                    // Добавить доход
+                    addRecord(input, true);
                     break;
                 case 3:
                     // Посмотреть расходы
+                    // С фильтрами
+                    printRecords();
                     break;
                 case 4:
                     // Посмотреть доходы
+                    printRecords();
                     break;
                 case 5:
+                    // Посмотреть все записи
+                    printRecords();
                     System.out.println(records);
                     break;
                 case 6:
                     // Редактировать запись о расходе/доходе
+                    modifyRecord();
                     break;
                 case 7:
                     // Удалить запись о расходе/доходе
+                    removeRecord();
                     break;
                 case 8:
                     // Загрузить записи о расходах/доходах из файла
@@ -67,6 +65,41 @@ public class Console {
         input.close();
     }
 
+    /**
+     * Метод прендназначенный для удаления записи
+     */
+    private static void removeRecord() {
+    }
+
+    /**
+     * Метод предназначенный для редактирования записи
+     */
+    private static void modifyRecord() {
+    }
+
+    /**
+     * Метод преднозначен для вывода транзакций клиенту по указанным фильтрам
+     */
+    private static void printRecords() {
+        // [1] - Вывести за последний месяц
+        // [2] - Вывести по дате
+
+    }
+
+    private static void addRecord(Scanner input, boolean isIncome) {
+        Map<String, Object> recordValues = readRecord(input);
+        Controller controller = new Controller();
+        boolean isRecordCreated = controller.createRecord(recordValues);
+        while (!isRecordCreated) {
+            System.out.println("Ошибка! Запись не создана!");
+            isRecordCreated = controller.createRecord(readRecord(input));
+        }
+        System.out.println("Запись успешно добавлена");
+    }
+
+    /**
+     * Метод считывает значение записи и кладет их в Map<String, Object>
+     */
     private static Map<String, Object> readRecord(Scanner input) {
         Map<String, Object> recordValues = new HashMap<>();
         input.nextLine();
@@ -83,16 +116,25 @@ public class Console {
         return recordValues;
     }
 
+    /**
+     * Метод счситывает имя записи
+     */
     private static String readRecordName(Scanner input) {
         System.out.print("Название: ");
         return input.nextLine();
     }
 
+    /**
+     * Метод считвыает категорию записи
+     */
     private static String readRecordCategory(Scanner input) {
         System.out.print("Категория: ");
         return input.nextLine();
     }
 
+    /**
+     * Метод считывает из консоли денежную сумму
+     */
     private static double readMoneyAmount(Scanner input) {
         System.out.print("Сумма: ");
         // controller.validateRecord(Map, "moneyAmount")
@@ -105,6 +147,10 @@ public class Console {
         return input.nextDouble();
     }
 
+    /**
+     * Метод считывает дату от человека в удобном формате и возвращает
+     * ее представление в миллисекундах
+     */
     private static long readDate(Scanner input) {
         System.out.print("Дата (дд.мм.гггг): ");
         String strTransactionDate = input.nextLine();
@@ -112,6 +158,9 @@ public class Console {
         if (strTransactionDate.isEmpty()) {
             return date.getTime();
         }
+
+        //TODO формат даты должен быть одинаковым во всем приложении
+        //TODO переводим SipmleDateFormat в сингалтон
         SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
         try {
             date = formater.parse(strTransactionDate);
@@ -123,6 +172,9 @@ public class Console {
         return date.getTime();
     }
 
+    /**
+     * Метод выводит в консоль главмное меню программы
+     */
     private static void printMenu() {
         System.out.println("==============================");
         System.out.println("=      EgorovFinance         =");

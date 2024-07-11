@@ -1,5 +1,5 @@
-import model.db.DatabaseConnection;
-import model.db.DatabaseInitializer;
+import db.DatabaseConnection;
+import db.DatabaseInitializer;
 import model.services.RecordService;
 import model.services.impl.RecordServiceImpl;
 

@@ -1,4 +1,4 @@
-package model.db;
+package db;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,7 +21,7 @@ public class DatabaseConnection {
         try (FileInputStream inputStream = new FileInputStream("src/main/resources/db.properties")) {
             properties.load(inputStream);
             inputStream.close();
-            String db = properties.getProperty("db");
+            String db = properties.getProperty("ru/sut/egorov-finance/db");
             String username = properties.getProperty("user");
             String password = properties.getProperty("password");
             String port = properties.getProperty("port");

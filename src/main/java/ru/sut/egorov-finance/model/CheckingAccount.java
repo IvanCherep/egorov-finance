@@ -7,13 +7,13 @@ public class CheckingAccount {
 
     private final Long id;
 
-    private final User user;
+    private final model.User user;
 
     private final String name;
 
-    private final Currency currency;
+    private final model.Currency currency;
 
-    public CheckingAccount(Long id, User user, String name, Currency currency) {
+    public CheckingAccount(Long id, model.User user, String name, model.Currency currency) {
         this.id = id;
         this.user = user;
         this.name = name;
@@ -28,11 +28,11 @@ public class CheckingAccount {
         return id;
     }
 
-    public User getUser() {
+    public model.User getUser() {
         return user;
     }
 
-    public Currency getCurrency() {
+    public model.Currency getCurrency() {
         return currency;
     }
 
