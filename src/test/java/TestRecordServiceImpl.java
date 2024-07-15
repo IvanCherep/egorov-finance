@@ -1,7 +1,7 @@
-import db.DatabaseConnection;
-import db.DatabaseInitializer;
-import model.services.RecordService;
-import model.services.impl.RecordServiceImpl;
+import ru.sut.egorov.finance.db.DatabaseConnection;
+import ru.sut.egorov.finance.db.DatabaseInitializer;
+import ru.sut.egorov.finance.model.dao.RecordDao;
+import ru.sut.egorov.finance.model.dao.impl.postgre.RecordDaoImpl;
 
 import java.sql.Connection;
 
@@ -10,9 +10,9 @@ public class TestRecordServiceImpl {
     public static void main(String[] args) {
         Connection connection = DatabaseConnection.getConnection();
         DatabaseInitializer.initializeDB(connection);
-        RecordService recordService = new RecordServiceImpl();
+//        RecordDao recordDao = new RecordDaoImpl();
 
-        System.out.println(recordService.getRecordsByCheckingAccount(3L));
+//        System.out.println(recordDao.getRecordsByCheckingAccount(3L));
     }
 
 }

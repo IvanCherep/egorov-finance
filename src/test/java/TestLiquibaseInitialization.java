@@ -1,5 +1,5 @@
-import db.DatabaseConnection;
-import db.DatabaseInitializer;
+import ru.sut.egorov.finance.db.DatabaseConnection;
+import ru.sut.egorov.finance.db.DatabaseInitializer;
 
 import java.sql.Connection;
 
