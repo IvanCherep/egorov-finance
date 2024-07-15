@@ -20,7 +20,6 @@ public class DatabaseConnection {
         Properties properties = new Properties();
         try (FileInputStream inputStream = new FileInputStream("src/main/resources/db.properties")) {
             properties.load(inputStream);
-            inputStream.close();
             String db = properties.getProperty("db");
             String username = properties.getProperty("user");
             String password = properties.getProperty("password");

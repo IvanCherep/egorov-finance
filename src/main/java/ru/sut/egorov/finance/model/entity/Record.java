@@ -1,7 +1,8 @@
 package ru.sut.egorov.finance.model.entity;
 
+import ru.sut.egorov.finance.singleton.FormatSingleton;
+
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 /**
  * Класс записи о финансовой операции (расходе или доходе)
@@ -32,7 +33,7 @@ public class Record {
 
     private final Boolean isRemoved;
 
-    private final static DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private final static DateFormat dateFormat = FormatSingleton.getDateFormat();
 
     public Record(Long id,
                   String name,
