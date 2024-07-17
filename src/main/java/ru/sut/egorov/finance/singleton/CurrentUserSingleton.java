@@ -16,6 +16,8 @@ public class CurrentUserSingleton {
 
     private static Currency currency;
 
+    private static Boolean showRemoved;
+
     public static User getCurrentUser() {
         if (user == null) {
             UserDao userDao = new UserDaoImpl();
@@ -30,6 +32,23 @@ public class CurrentUserSingleton {
             }
         }
         return user;
+    }
+//
+    public static Boolean shoutShowRemoved() {
+        UserDao userDao = new UserDaoImpl();
+        if (showRemoved == null) {
+            Properties properties = new Properties();
+            try (FileInputStream inputStream = new FileInputStream("src/main/resources/user_preferences.properties")) {
+                properties.load(inputStream);
+                user = userDao.findById(Long.valueOf(properties.getProperty("")));
+            } catch (FileNotFoundException e) {
+                System.err.println("user_preferences.properties file not found ERROR: " + e.getMessage());
+            } catch (IOException e) {
+                System.err.println("user_preferences.properties file read ERROR: " + e.getMessage());
+            }
+        }
+        // исправить
+        return true;
     }
 
     public static Currency getCurrentCurrency() {

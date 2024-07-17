@@ -12,6 +12,7 @@ public class ObjectWrapper {
         NO_SECOND_FIELD
     }
 
+    // return 0 - success
 }
 
 

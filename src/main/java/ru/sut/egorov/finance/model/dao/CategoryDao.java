@@ -12,5 +12,9 @@ public interface CategoryDao {
 
     public boolean save(Category category);
 
+    public boolean update(Category category);
+
+    public boolean create(Category category);
+
     public boolean remove(Long id);
 }

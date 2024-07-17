@@ -110,7 +110,42 @@ public class CategoryDaoImpl implements CategoryDao {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            System.err.println("CategoryDaoImpl.save(User user) method exception! " + e.getMessage());
+            System.err.println("CategoryDaoImpl.save(Category category) method exception! " + e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean update(Category category) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            Category existingCategory = findById(category.getId());
+            if (existingCategory == null) {
+                    return false;
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CATEGORIES);
+            preparedStatement.setString(1, category.getName());
+            preparedStatement.setBoolean(2, category.getIncome());
+            preparedStatement.setLong(3, category.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("CategoryDaoImpl.update(Category category) method exception! " + e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean create(Category category) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY);
+                preparedStatement.setString(1, category.getName());
+                preparedStatement.setBoolean(2, category.getIncome());
+                preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("CategoryDaoImpl.create(Category category) method exception! " + e.getMessage());
             return false;
         }
 

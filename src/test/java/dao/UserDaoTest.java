@@ -40,7 +40,7 @@ public class UserDaoTest {
         // Test save method to update User
         // Test remove method to remove User
         List<User> users = userDao.find();
-        for (User user: users) {
+        for (User user : users) {
             if (user.getName().equals("test_user")) {
                 User updatedTestUser = new User(
                         user.getId(),

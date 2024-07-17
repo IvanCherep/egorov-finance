@@ -1,7 +1,5 @@
 import ru.sut.egorov.finance.db.DatabaseConnection;
 import ru.sut.egorov.finance.db.DatabaseInitializer;
-import ru.sut.egorov.finance.model.dao.RecordDao;
-import ru.sut.egorov.finance.model.dao.impl.postgre.RecordDaoImpl;
 
 import java.sql.Connection;
 

@@ -8,6 +8,8 @@ public interface RecordDao {
 
     public List<Record> find();
 
+    public long[] findIds();
+
     public Record findById(Long id);
 
     public boolean save(Record record);

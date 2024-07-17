@@ -10,6 +10,9 @@ import java.util.Map;
 
 public interface RecordService {
 
+
+    // Если мы знаем название таблицы, названия полей и типы полей
+    // то мы можем сгенерировать универсальный запрос
     public boolean save(Map<String, Object> recordValues);
 
     public boolean remove(Long id);

@@ -1,7 +1,9 @@
 # egorov-finance
 
 ## Запуск
+
 Инструменты:
+
 - Apache Maven 3.6.3
 - Java 11
 

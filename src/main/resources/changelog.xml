@@ -119,7 +119,7 @@
             </column>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="2" author="iegorov">
         <addForeignKeyConstraint
                 baseTableName="checking_accounts"

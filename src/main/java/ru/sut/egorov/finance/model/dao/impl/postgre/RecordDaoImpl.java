@@ -29,6 +29,11 @@ public class RecordDaoImpl implements RecordDao {
                     "FROM records " +
                     "WHERE is_removed = false";
 
+    public final String SELECT_ALL_RECORDS_IDS =
+            "SELECT id, " +
+                    "FROM records " +
+                    "WHERE is_removed = false";
+
     public final String SELECT_RECORD_BY_ID =
             "SELECT id, " +
                     "name, " +
@@ -105,12 +110,16 @@ public class RecordDaoImpl implements RecordDao {
                         )
                 );
             }
-
         } catch (SQLException e) {
             System.err.println("RecordDaoImpl.find() method exception: " + e.getMessage());
         }
 
         return records;
+    }
+
+    @Override
+    public long[] findIds() {
+        return new long[0];
     }
 
     @Override
@@ -197,6 +206,8 @@ public class RecordDaoImpl implements RecordDao {
 
         return true;
     }
+
+
 
     @Override
     public boolean remove(Long id) {
