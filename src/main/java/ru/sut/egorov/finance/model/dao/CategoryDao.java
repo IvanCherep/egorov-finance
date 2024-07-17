@@ -6,15 +6,13 @@ import java.util.List;
 
 public interface CategoryDao {
 
-    public List<Category> find();
-
     public Category findById(Long id);
 
-    public boolean save(Category category);
+    public boolean create(Category category);
+
+    public List<Category> find();
 
     public boolean update(Category category);
-
-    public boolean create(Category category);
 
     public boolean remove(Long id);
 }

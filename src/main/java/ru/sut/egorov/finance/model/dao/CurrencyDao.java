@@ -6,11 +6,13 @@ import java.util.List;
 
 public interface CurrencyDao {
 
-    public List<Currency> find();
-
     public Currency findById(Long id);
 
-    public boolean save(Currency currency);
+    public boolean create(Currency currency);
+
+    public List<Currency> find();
+
+    public boolean update(Currency currency);
 
     public boolean remove(Long id);
 

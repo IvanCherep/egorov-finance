@@ -36,30 +36,6 @@ public class CurrencyDaoImpl implements CurrencyDao {
                     "WHERE id = ?";
 
     @Override
-    public List<Currency> find() {
-        List<Currency> currencies = new ArrayList<>();
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SELECT_ALL_CURRENCIES);
-            while (resultSet.next()) {
-                currencies.add(
-                        new Currency(
-                                resultSet.getLong("id"),
-                                resultSet.getString("name"),
-                                resultSet.getString("sign"),
-                                resultSet.getBoolean("is_removed")
-                        )
-                );
-            }
-
-        } catch (SQLException e) {
-            System.err.println("CurrencyDaoImpl.find() method exception: " + e.getMessage());
-        }
-
-        return currencies;
-    }
-
-    @Override
     public Currency findById(Long id) {
         Currency currency = null;
 
@@ -84,31 +60,56 @@ public class CurrencyDaoImpl implements CurrencyDao {
     }
 
     @Override
-    public boolean save(Currency currency) {
-        boolean currencyIdIsNull = false;
-        boolean currencyAlreadyExists = false;
+    public boolean create(Currency currency) {
         try (Connection connection = DatabaseConnection.getConnection()) {
-            if (currency.getId() == null) {
-                currencyIdIsNull = true;
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CURRENCY);
+            preparedStatement.setString(1, currency.getName());
+            preparedStatement.setString(2, currency.getSign());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("CurrencyDaoImpl.save(Currency currency) method exception! " + e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public List<Currency> find() {
+        List<Currency> currencies = new ArrayList<>();
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SELECT_ALL_CURRENCIES);
+            while (resultSet.next()) {
+                currencies.add(
+                        new Currency(
+                                resultSet.getLong("id"),
+                                resultSet.getString("name"),
+                                resultSet.getString("sign"),
+                                resultSet.getBoolean("is_removed")
+                        )
+                );
             }
-            if (!currencyIdIsNull) {
-                Currency existingCurrency = findById(currency.getId());
-                if (existingCurrency != null) {
-                    currencyAlreadyExists = true;
-                }
+
+        } catch (SQLException e) {
+            System.err.println("CurrencyDaoImpl.find() method exception: " + e.getMessage());
+        }
+
+        return currencies;
+    }
+
+    @Override
+    public boolean update(Currency currency) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            Currency existingCurrency = findById(currency.getId());
+            if (existingCurrency != null) {
+                return false;
             }
-            if (currencyAlreadyExists) {
-                PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CURRENCIES);
-                preparedStatement.setString(1, currency.getName());
-                preparedStatement.setString(2, currency.getSign());
-                preparedStatement.setLong(3, currency.getId());
-                preparedStatement.executeUpdate();
-            } else {
-                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CURRENCY);
-                preparedStatement.setString(1, currency.getName());
-                preparedStatement.setString(2, currency.getSign());
-                preparedStatement.executeUpdate();
-            }
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CURRENCIES);
+            preparedStatement.setString(1, currency.getName());
+            preparedStatement.setString(2, currency.getSign());
+            preparedStatement.setLong(3, currency.getId());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.err.println("CurrencyDaoImpl.save(Currency currency) method exception! " + e.getMessage());
             return false;

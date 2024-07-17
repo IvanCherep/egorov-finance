@@ -40,34 +40,6 @@ public class UserDaoImpl implements UserDao {
                     "WHERE id = ?";
 
     @Override
-    public List<User> find() {
-        List<User> users = new ArrayList<>();
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SELECT_ALL_USERS);
-            while (resultSet.next()) {
-                users.add(
-                        new User(
-                                resultSet.getLong("id"),
-                                resultSet.getString("login"),
-                                resultSet.getString("name"),
-                                resultSet.getString("surname"),
-                                resultSet.getString("email"),
-                                resultSet.getString("password"),
-                                resultSet.getString("phone_number"),
-                                resultSet.getBoolean("is_removed")
-                        )
-                );
-            }
-
-        } catch (SQLException e) {
-            System.err.println("UserDaoImpl.find() method exception: " + e.getMessage());
-        }
-
-        return users;
-    }
-
-    @Override
     public User findById(Long id) {
         User user = null;
 
@@ -96,39 +68,68 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean save(User user) {
-        boolean userIdIsNull = false;
-        boolean userAlreadyExists = false;
+    public boolean create(User user) {
         try (Connection connection = DatabaseConnection.getConnection()) {
-            if (user.getId() == null) {
-                userIdIsNull = true;
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER);
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(2, user.getName());
+            preparedStatement.setString(3, user.getSurname());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(5, user.getPassword());
+            preparedStatement.setString(6, user.getPhoneNumber());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("UserDaoImpl.save(User user) method exception! " + e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public List<User> find() {
+        List<User> users = new ArrayList<>();
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SELECT_ALL_USERS);
+            while (resultSet.next()) {
+                users.add(
+                        new User(
+                                resultSet.getLong("id"),
+                                resultSet.getString("login"),
+                                resultSet.getString("name"),
+                                resultSet.getString("surname"),
+                                resultSet.getString("email"),
+                                resultSet.getString("password"),
+                                resultSet.getString("phone_number"),
+                                resultSet.getBoolean("is_removed")
+                        )
+                );
             }
-            if (!userIdIsNull) {
-                User existingUser = findById(user.getId());
-                if (existingUser != null) {
-                    userAlreadyExists = true;
-                }
+
+        } catch (SQLException e) {
+            System.err.println("UserDaoImpl.find() method exception: " + e.getMessage());
+        }
+
+        return users;
+    }
+
+    @Override
+    public boolean update(User user) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            User existingUser = findById(user.getId());
+            if (existingUser != null) {
+                return false;
             }
-            if (userAlreadyExists) {
-                PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER);
-                preparedStatement.setString(1, user.getLogin());
-                preparedStatement.setString(2, user.getName());
-                preparedStatement.setString(3, user.getSurname());
-                preparedStatement.setString(4, user.getEmail());
-                preparedStatement.setString(5, user.getPassword());
-                preparedStatement.setString(6, user.getPhoneNumber());
-                preparedStatement.setLong(7, user.getId());
-                preparedStatement.executeUpdate();
-            } else {
-                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER);
-                preparedStatement.setString(1, user.getLogin());
-                preparedStatement.setString(2, user.getName());
-                preparedStatement.setString(3, user.getSurname());
-                preparedStatement.setString(4, user.getEmail());
-                preparedStatement.setString(5, user.getPassword());
-                preparedStatement.setString(6, user.getPhoneNumber());
-                preparedStatement.executeUpdate();
-            }
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER);
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(2, user.getName());
+            preparedStatement.setString(3, user.getSurname());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(5, user.getPassword());
+            preparedStatement.setString(6, user.getPhoneNumber());
+            preparedStatement.setLong(7, user.getId());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.err.println("UserDaoImpl.save(User user) method exception! " + e.getMessage());
             return false;

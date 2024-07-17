@@ -6,11 +6,13 @@ import java.util.List;
 
 public interface UserDao {
 
-    public List<User> find();
-
     public User findById(Long id);
 
-    public boolean save(User user);
+    public boolean create(User user);
+
+    public List<User> find();
+
+    public boolean update(User user);
 
     public boolean remove(Long id);
 

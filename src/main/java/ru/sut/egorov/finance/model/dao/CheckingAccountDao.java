@@ -6,11 +6,13 @@ import java.util.List;
 
 public interface CheckingAccountDao {
 
-    public List<CheckingAccount> find();
-
     public CheckingAccount findById(Long id);
 
-    public boolean save(CheckingAccount checkingAccount);
+    public boolean create(CheckingAccount checkingAccount);
+
+    public List<CheckingAccount> find();
+
+    public boolean update(CheckingAccount checkingAccount);
 
     public boolean remove(Long id);
 

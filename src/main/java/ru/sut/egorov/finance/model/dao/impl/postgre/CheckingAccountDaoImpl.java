@@ -39,6 +39,48 @@ public class CheckingAccountDaoImpl implements CheckingAccountDao {
                     "WHERE id = ?";
 
     @Override
+    public CheckingAccount findById(Long id) {
+        UserDao userDao = new UserDaoImpl();
+        CurrencyDao currencyDao = new CurrencyDaoImpl();
+        CheckingAccount checkingAccount = null;
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CHECKING_ACCOUNT_BY_ID);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                checkingAccount = new CheckingAccount(
+                        resultSet.getLong("id"),
+                        userDao.findById(resultSet.getLong("user_id")),
+                        resultSet.getString("name"),
+                        currencyDao.findById(resultSet.getLong("currency_id")),
+                        resultSet.getBoolean("is_removed")
+                );
+            }
+
+        } catch (SQLException e) {
+            System.err.println("CheckingAccountDaoImpl.findById(Long id) method exception! " + e.getMessage());
+        }
+
+        return checkingAccount;
+    }
+
+    @Override
+    public boolean create(CheckingAccount checkingAccount) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CHECKING_ACCOUNT);
+            preparedStatement.setLong(1, checkingAccount.getUser().getId());
+            preparedStatement.setString(2, checkingAccount.getName());
+            preparedStatement.setLong(3, checkingAccount.getCurrency().getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("CheckingAccountDaoImpl.save(CheckingAccount checkingAccount) method exception! " + e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     public List<CheckingAccount> find() {
         UserDao userDao = new UserDaoImpl();
         CurrencyDao currencyDao = new CurrencyDaoImpl();
@@ -66,59 +108,18 @@ public class CheckingAccountDaoImpl implements CheckingAccountDao {
     }
 
     @Override
-    public CheckingAccount findById(Long id) {
-        UserDao userDao = new UserDaoImpl();
-        CurrencyDao currencyDao = new CurrencyDaoImpl();
-        CheckingAccount checkingAccount = null;
+    public boolean update(CheckingAccount checkingAccount) {
         try (Connection connection = DatabaseConnection.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CHECKING_ACCOUNT_BY_ID);
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                checkingAccount = new CheckingAccount(
-                        resultSet.getLong("id"),
-                        userDao.findById(resultSet.getLong("user_id")),
-                        resultSet.getString("name"),
-                        currencyDao.findById(resultSet.getLong("currency_id")),
-                        resultSet.getBoolean("is_removed")
-                );
+            CheckingAccount existingCheckingAccount = findById(checkingAccount.getId());
+            if (existingCheckingAccount != null) {
+                return false;
             }
-
-        } catch (SQLException e) {
-            System.err.println("CheckingAccountDaoImpl.findById(Long id) method exception! " + e.getMessage());
-        }
-
-        return checkingAccount;
-    }
-
-    @Override
-    public boolean save(CheckingAccount checkingAccount) {
-        boolean checkingAccountIdIsNull = false;
-        boolean checkingAccountAlreadyExists = false;
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            if (checkingAccount.getId() == null) {
-                checkingAccountIdIsNull = true;
-            }
-            if (!checkingAccountIdIsNull) {
-                CheckingAccount existingCheckingAccount = findById(checkingAccount.getId());
-                if (existingCheckingAccount != null) {
-                    checkingAccountAlreadyExists = true;
-                }
-            }
-            if (checkingAccountAlreadyExists) {
                 PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CHECKING_ACCOUNT);
                 preparedStatement.setLong(1, checkingAccount.getUser().getId());
                 preparedStatement.setString(2, checkingAccount.getName());
                 preparedStatement.setLong(3, checkingAccount.getCurrency().getId());
                 preparedStatement.setLong(4, checkingAccount.getId());
                 preparedStatement.executeUpdate();
-            } else {
-                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CHECKING_ACCOUNT);
-                preparedStatement.setLong(1, checkingAccount.getUser().getId());
-                preparedStatement.setString(2, checkingAccount.getName());
-                preparedStatement.setLong(3, checkingAccount.getCurrency().getId());
-                preparedStatement.executeUpdate();
-            }
         } catch (SQLException e) {
             System.err.println("CheckingAccountDaoImpl.save(CheckingAccount checkingAccount) method exception! " + e.getMessage());
             return false;

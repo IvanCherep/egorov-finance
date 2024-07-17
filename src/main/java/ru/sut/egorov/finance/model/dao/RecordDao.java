@@ -6,14 +6,16 @@ import java.util.List;
 
 public interface RecordDao {
 
-    public List<Record> find();
-
-    public long[] findIds();
-
     public Record findById(Long id);
 
-    public boolean save(Record record);
+    public boolean create(Record record);
+
+    public List<Record> find();
+
+    public boolean update(Record record);
 
     public boolean remove(Long id);
+
+    public long[] findIds();
 
 }

@@ -36,30 +36,6 @@ public class CategoryDaoImpl implements CategoryDao {
                     "WHERE id = ?";
 
     @Override
-    public List<Category> find() {
-        List<Category> categories = new ArrayList<>();
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SELECT_ALL_CATEGORIES);
-            while (resultSet.next()) {
-                categories.add(
-                        new Category(
-                                resultSet.getLong("id"),
-                                resultSet.getString("name"),
-                                resultSet.getBoolean("is_income"),
-                                resultSet.getBoolean("is_removed")
-                        )
-                );
-            }
-
-        } catch (SQLException e) {
-            System.err.println("CategoryDaoImpl.find() method exception: " + e.getMessage());
-        }
-
-        return categories;
-    }
-
-    @Override
     public Category findById(Long id) {
         Category category = null;
 
@@ -84,37 +60,42 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public boolean save(Category category) {
-        boolean categoryIdIsNull = false;
-        boolean categoryAlreadyExists = false;
+    public boolean create(Category category) {
         try (Connection connection = DatabaseConnection.getConnection()) {
-            if (category.getId() == null) {
-                categoryIdIsNull = true;
-            }
-            if (!categoryIdIsNull) {
-                Category existingCategory = findById(category.getId());
-                if (existingCategory != null) {
-                    categoryAlreadyExists = true;
-                }
-            }
-            if (categoryAlreadyExists) {
-                PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CATEGORIES);
-                preparedStatement.setString(1, category.getName());
-                preparedStatement.setBoolean(2, category.getIncome());
-                preparedStatement.setLong(3, category.getId());
-                preparedStatement.executeUpdate();
-            } else {
-                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY);
-                preparedStatement.setString(1, category.getName());
-                preparedStatement.setBoolean(2, category.getIncome());
-                preparedStatement.executeUpdate();
-            }
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY);
+            preparedStatement.setString(1, category.getName());
+            preparedStatement.setBoolean(2, category.getIncome());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("CategoryDaoImpl.save(Category category) method exception! " + e.getMessage());
+            System.err.println("CategoryDaoImpl.create(Category category) method exception! " + e.getMessage());
             return false;
         }
 
         return true;
+    }
+
+    @Override
+    public List<Category> find() {
+        List<Category> categories = new ArrayList<>();
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SELECT_ALL_CATEGORIES);
+            while (resultSet.next()) {
+                categories.add(
+                        new Category(
+                                resultSet.getLong("id"),
+                                resultSet.getString("name"),
+                                resultSet.getBoolean("is_income"),
+                                resultSet.getBoolean("is_removed")
+                        )
+                );
+            }
+
+        } catch (SQLException e) {
+            System.err.println("CategoryDaoImpl.find() method exception: " + e.getMessage());
+        }
+
+        return categories;
     }
 
     @Override
@@ -131,21 +112,6 @@ public class CategoryDaoImpl implements CategoryDao {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.err.println("CategoryDaoImpl.update(Category category) method exception! " + e.getMessage());
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean create(Category category) {
-        try (Connection connection = DatabaseConnection.getConnection()) {
-                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY);
-                preparedStatement.setString(1, category.getName());
-                preparedStatement.setBoolean(2, category.getIncome());
-                preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("CategoryDaoImpl.create(Category category) method exception! " + e.getMessage());
             return false;
         }
 
